@@ -1,3 +1,3 @@
 # pipex
 
-![Diagramme Pipex](pipex_schema.png)
+![Diagramme Pipex](schema_pipex.png)
