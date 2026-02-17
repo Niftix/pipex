@@ -9,8 +9,6 @@ Le projet **Pipex** consiste à recréer en C le mécanisme des redirections (`<
 
 🚀 **TLDR** : Pipex permet de comprendre comment les données circulent entre les programmes en soudant des **File Descriptors**, en gérant des **Pipes** et en exécutant des binaires système via `execve`.
 
-[Image of a diagram showing process fork and pipe redirection in C]
-
 > **⚠️ Note sur la Norme 42** :
 > * Fonctions limitées à **25 lignes** maximum.
 > * Variables déclarées et alignées en début de fonction.
