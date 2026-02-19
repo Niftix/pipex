@@ -28,40 +28,16 @@ static int	here_doc(char *limiter)
 	while (line)
 	{
 		if (ft_strncmp(line, limiter, size) == 0)
+		{
+			free(line);
 			break ;
-		else
-			ft_putstr_fd(line, fd);
+		}
+		ft_putstr_fd(line, fd);
 		free(line);
 		line = get_next_line(0);
 	}
-	free(line);
+	free(get_next_line(0));
 	close(fd);
-	return (0);
-}
-
-int	pipex_init(t_pipex *pipex, char **av, int ac)
-{
-	if (pipex->is_here_doc == 1)
-	{
-		pipex->cmd_count = ac - 4;
-		pipex->infile = ".doc_tmp";
-		pipex->outfile = av[ac - 1];
-	}
-	else
-	{
-		pipex->cmd_count = ac - 3;
-		pipex->infile = av[1];
-		pipex->outfile = av[ac - 1];
-	}
-	pipex->cmds_args = malloc(sizeof(char **) * pipex->cmd_count);
-	if (!pipex->cmds_args)
-		return (-1);
-	pipex->cmds_path = malloc(sizeof(char *) * pipex->cmd_count);
-	if (!pipex->cmds_path)
-	{
-		free(pipex->cmds_args);
-		return (-1);
-	}
 	return (0);
 }
 

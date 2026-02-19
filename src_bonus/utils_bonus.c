@@ -71,16 +71,3 @@ void	free_path(char **path, int count)
 	}
 	free(path);
 }
-
-void	close_all(int **pipes, int count)
-{
-	int	i;
-
-	i = 0;
-	while (i < count)
-	{
-		close(pipes[i][0]);
-		close(pipes[i][1]);
-		i++;
-	}
-}

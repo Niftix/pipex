@@ -53,13 +53,6 @@ static int	parse_path(char **envp, int path_index, t_pipex *pipex)
 	while (i < pipex->cmd_count)
 	{
 		pipex->cmds_path[i] = find_access(res, pipex->cmds_args[i][0]);
-		if (!pipex->cmds_path[i])
-		{
-			ft_free((void **)res);
-			ft_free((void **)pipex->cmds_path);
-			ft_free_cmd(pipex->cmds_args, pipex->cmd_count);
-			return (-1);
-		}
 		i++;
 	}
 	ft_free((void **)res);
