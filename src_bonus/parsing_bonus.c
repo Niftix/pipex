@@ -22,7 +22,7 @@ static char	*find_access(char **res, char *cmd_name)
 	if (!cmd_name || !cmd_name[0])
 		return (NULL);
 	if (access(cmd_name, X_OK) == 0)
-		return (cmd_name);
+		return (ft_strdup(cmd_name));
 	while (res[i])
 	{
 		path = ft_strjoin(res[i], "/");
@@ -49,7 +49,11 @@ static int	parse_path(char **envp, int path_index, t_pipex *pipex)
 	i = 0;
 	res = ft_split(envp[path_index] + 5, ':');
 	if (!res)
+	{
+		ft_free_cmd(pipex->cmds_args, pipex->cmd_count);
+		free(pipex->cmds_path);
 		return (-1);
+	}
 	while (i < pipex->cmd_count)
 	{
 		pipex->cmds_path[i] = find_access(res, pipex->cmds_args[i][0]);

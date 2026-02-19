@@ -71,3 +71,12 @@ void	free_path(char **path, int count)
 	}
 	free(path);
 }
+
+void	child_free(t_pipex *pipex)
+{
+	ft_free_cmd(pipex->cmds_args, pipex->cmd_count);
+	free_path(pipex->cmds_path, pipex->cmd_count);
+	close_all(pipex->pipes, pipex->cmd_count - 1);
+	free_pipes(pipex->pipes, pipex->cmd_count - 1);
+	free(pipex->pid);
+}

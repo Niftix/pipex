@@ -12,7 +12,7 @@
 
 #include "pipex_bonus.h"
 
-static void	close_all(int **pipes, int count)
+void	close_all(int **pipes, int count)
 {
 	int	i;
 
@@ -25,13 +25,19 @@ static void	close_all(int **pipes, int count)
 	}
 }
 
-void	child_free(t_pipex *pipex)
+static int	fork_core(t_pipex *pipex, int i, char **envp)
 {
-	ft_free_cmd(pipex->cmds_args, pipex->cmd_count);
-	free_path(pipex->cmds_path, pipex->cmd_count);
-	close_all(pipex->pipes, pipex->cmd_count - 1);
-	free_pipes(pipex->pipes, pipex->cmd_count - 1);
-	free(pipex->pid);
+	pipex->pid[i] = fork();
+	if (pipex->pid[i] == -1)
+	{
+		close_all(pipex->pipes, pipex->cmd_count - 1);
+		free_pipes(pipex->pipes, pipex->cmd_count - 1);
+		free(pipex->pid);
+		return (-1);
+	}
+	if (pipex->pid[i] == 0)
+		pipex_exec(i, pipex, envp);
+	return (0);
 }
 
 void	pipex_exec(int i, t_pipex *pipex, char **envp)
@@ -89,9 +95,8 @@ int	pipex_core(t_pipex *pipex, char **envp)
 	i = 0;
 	while (i < pipex->cmd_count)
 	{
-		pipex->pid[i] = fork();
-		if (pipex->pid[i] == 0)
-			pipex_exec(i, pipex, envp);
+		if (fork_core(pipex, i, envp) == -1)
+			return (-1);
 		i++;
 	}
 	close_all(pipex->pipes, pipex->cmd_count - 1);
